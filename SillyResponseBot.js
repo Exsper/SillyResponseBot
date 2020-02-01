@@ -1,5 +1,4 @@
 'use strict';
-const ReplyObject = require('./ReplyObject');
 const finder = require('./findBuilder');
 
 

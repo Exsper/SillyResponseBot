@@ -1,3 +1,5 @@
+const ReplyObject = require('../ReplyObject');
+
 //用jieba解析字符串
 const nodejieba = require("nodejieba");
 nodejieba.load({

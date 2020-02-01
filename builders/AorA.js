@@ -1,3 +1,4 @@
+const ReplyObject = require('../ReplyObject');
 /* #region AorA */
 
 /**
