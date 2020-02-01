@@ -1,6 +1,4 @@
 'use strict';
-const finder = require('./findBuilder');
-
 
 // 因为jieba的解析会将“不”字和其他字连起来，不好判断，所以还是将AorA形式单独判断
 // 因为类似“(不)xxx呢”也会被AorA捕获，所以如果AorA没有输出也要再尝试doOrNot
@@ -55,10 +53,21 @@ const rl = readline.createInterface({
 });
 rl.on('line', function (line) {
     try {
-        // TODO 取！后面的
-        let str = line.trim();
-        let r = getReply(str);
-        if (r.reply) console.log(r.choices);
+        
+        //let str = line.trim();
+        //let r = getReply(str);
+        //if (r.reply) console.log(r.choices);
+        
+        let ask = line.trim();
+        if (ask.substring(0, 1) === "!" || ask.substring(0, 1) === "！") {
+            let str = ask.substring(1).trim();
+            let r = getReply(str);
+            if (r.reply) {
+                //console.log(r.choices);
+                let reply = r.toString();
+                if (reply) console.log(reply);
+            }
+        }
     }
     catch (ex) {
         console.log(ex);
@@ -67,5 +76,4 @@ rl.on('line', function (line) {
 rl.on('close', function () {
     process.exit();
 });
-
 */
