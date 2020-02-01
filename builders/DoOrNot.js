@@ -76,6 +76,7 @@ function doOrNot(ask) {
     // 现在暂时只回答动词，不是连贯句子
     if (result[yIndex - 1].word === "什么") return reply.no(); // 不是选择性疑问句
     else if (ask.indexOf("是") >= 0) reply.choices = ['是', '不是']; // 直接从原句中找“是”更好
+    else if (ask.indexOf("会") >= 0) reply.choices = ['会', '不会']; // 直接从原句中找“会”更好
     else if (result[yIndex - 1].word === "了") reply.choices = [`${vWord}了`, `没${vWord}`];
     else reply.choices = [vWord, `不${vWord}`];
     return reply;
