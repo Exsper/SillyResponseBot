@@ -28,6 +28,7 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
+    <Content Include="osu.dict.utf8" />
     <Content Include="SillyResponseBot.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
