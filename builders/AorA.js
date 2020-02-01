@@ -100,7 +100,7 @@ function AorA(ask) {
     //let replyStringFix = positionFlip(replyString);
 
     reply.choices = [replyString, `不${replyString}`];
-    reply.filpPosition();
+    reply.flipPosition();
     return reply;
 }
 
