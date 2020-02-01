@@ -202,6 +202,9 @@ function doOrNot(ask) {
     let result = nodejieba.tag(ask); // [{word: string, tag: string}, ...{}]
     //console.log(result);
 
+    // 已知问题：末尾加标点符号后v+y有可能被视为一个词组(x)，如“饿吗”、“吃吗”
+    // 建议不要在ask中加标点符号
+
     // step1: 倒序查询语气词y
     let yIndex = lastIndexOfY(result);
     if (yIndex < 1) return reply.no(); // 单独一个“吗”字也不行
@@ -271,7 +274,7 @@ module.exports.apply = (ctx) => {
 
 // test
 
-/*
+
 let readline = require('readline');
 const rl = readline.createInterface({
     input: process.stdin,
@@ -292,4 +295,4 @@ rl.on('close', function () {
     process.exit();
 });
 
-*/
+
