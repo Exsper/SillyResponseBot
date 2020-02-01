@@ -28,7 +28,7 @@ module.exports.apply = (ctx) => {
                 // let r = getReply(str);
                 const builder = b.returnBuilderIfMatched(str);
                 if (!builder) return next();
-                const r = builder();
+                const r = builder(str);
                 if (r.reply) {
                     //console.log(r.choices);
                     let reply = r.toString();

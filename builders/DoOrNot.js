@@ -53,6 +53,7 @@ function doOrNot(ask) {
     // if (isQuestion === false) return reply.no();
 
     let result = nodejieba.tag(ask); // [{word: string, tag: string}, ...{}]
+    reply.tag = result;
     //console.log(result);
 
     // step1: 倒序查询语气词y

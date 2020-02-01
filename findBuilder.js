@@ -20,7 +20,6 @@ function findBuilder() {
 findBuilder.prototype.returnBuilderIfMatched = function(s) {
     const match = this.finder.find(matcher => matcher.matcher(s))
     if (match !== undefined) {
-        console.log(match)
         return match.builder;
     } else {
         return false;
