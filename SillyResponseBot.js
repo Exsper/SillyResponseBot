@@ -254,7 +254,7 @@ module.exports.apply = (ctx) => {
                 let str = ask.substring(1).trim();
                 let r = getReply(str);
                 if (r.reply) {
-                    console.log(r.choices);
+                    //console.log(r.choices);
                     let reply = r.toString();
                     if (reply) return meta.$send(reply);
                 }
@@ -271,7 +271,7 @@ module.exports.apply = (ctx) => {
 
 // test
 
-
+/*
 let readline = require('readline');
 const rl = readline.createInterface({
     input: process.stdin,
@@ -292,4 +292,4 @@ rl.on('close', function () {
     process.exit();
 });
 
-
+*/
