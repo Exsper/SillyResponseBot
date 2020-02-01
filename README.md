@@ -1,5 +1,7 @@
 # SillyResponseBot
 
-## usage
+## require
+```sh
 npm install node-gyp  
 npm install nodejieba  
+```
