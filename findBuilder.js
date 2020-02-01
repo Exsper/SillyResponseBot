@@ -4,7 +4,7 @@ const doOrNot = require('./builders/DoOrNot');
 //match the replyObject builder function.
 function findBuilder() {
     this.finder = [{
-            matcher: (s) => s.match(/(.+)[嘛吗呢啊么呀呐](\?)?/) || s.match(/(.+)[嘛吗呢啊么呀呐](\w+)/),
+            matcher: (s) => s.match(/(.+)[嘛吗呢啊么呀呐]([?？])?/),
             builder: doOrNot
         },
         {
