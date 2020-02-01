@@ -29,10 +29,19 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="osu.dict.utf8" />
+    <Content Include="bin\Microsoft.NodejsTools.WebRole.dll" />
+    <Content Include="builders\AorA.js" />
+    <Content Include="builders\DoOrNot.js" />
+    <Content Include="builders\osu.dict.utf8" />
+    <Content Include="findBuilder.js" />
+    <Content Include="ReplyObject.js" />
     <Content Include="SillyResponseBot.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\" />
+    <Folder Include="builders\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>
