@@ -30,7 +30,7 @@ ReplyObject.prototype.no = function() {
 };
 // 人称代词转换
 // 以后“是你吗” -> “不是我” 也用得到，现在暂时只回答“不是”
-ReplyObject.prototype.positionFlip = function (str) {
+ReplyObject.prototype.flipPosition = function (str) {
     this.choices = this.choices.map(str => str.split("").map(char => (char === '我') ? '你' : (char === '你' ? '我' : char)).join(""));
 }
 
