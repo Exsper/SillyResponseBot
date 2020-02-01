@@ -96,9 +96,10 @@ function AorA(ask) {
     //输出
     let replyString = doString + endString;
     // 将“我”改成“你”，“你”改成“我”
-    let replyStringFix = positionFlip(replyString);
+    //let replyStringFix = positionFlip(replyString);
 
-    reply.choices = [replyStringFix, `不${replyStringFix}`];
+    reply.choices = [replyString, `不${replyString}`];
+    reply.filpPosition();
     return reply;
 }
 
