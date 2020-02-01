@@ -282,10 +282,21 @@ const rl = readline.createInterface({
 });
 rl.on('line', function (line) {
     try {
-        // TODO 取！后面的
-        let str = line.trim();
-        let r = getReply(str);
-        if (r.reply) console.log(r.choices);
+        
+        //let str = line.trim();
+        //let r = getReply(str);
+        //if (r.reply) console.log(r.choices);
+        
+        let ask = line.trim();
+        if (ask.substring(0, 1) === "!" || ask.substring(0, 1) === "！") {
+            let str = ask.substring(1).trim();
+            let r = getReply(str);
+            if (r.reply) {
+                //console.log(r.choices);
+                let reply = r.toString();
+                if (reply) console.log(reply);
+            }
+        }
     }
     catch (ex) {
         console.log(ex);
@@ -294,5 +305,6 @@ rl.on('line', function (line) {
 rl.on('close', function () {
     process.exit();
 });
-*/
 
+
+*/
