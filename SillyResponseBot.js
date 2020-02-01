@@ -1,5 +1,11 @@
 'use strict';
 
+//用jieba解析字符串
+const nodejieba = require("nodejieba");
+nodejieba.load({
+    userDict: __dirname + '/osu.dict.utf8' // osu特有词汇
+});
+
 /* #region ReplyObject */
 function ReplyObject(ask) {
     this.reply = true;
@@ -152,7 +158,7 @@ function AorA(ask) {
 // 倒序(end -> start)查找语气词y，返回语气词y在解析结果中的index
 function lastIndexOfY(result, end = result.length - 1) {
     for (let i = end; i >= 0; i--) {
-        if (result[i].tag === "y" || result[i].word === "了吗")
+        if (result[i].tag === "y" || result[i].word[0] === "了")
             return i;
     }
     // 没有找到语气词
@@ -181,11 +187,18 @@ function lastIndexOfA(result, end = result.length - 1) {
 
 function doOrNot(ask) {
     let reply = new ReplyObject(ask);
-    //用jieba解析字符串
-    const nodejieba = require("nodejieba");
-    nodejieba.load({
-        userDict: __dirname+'/osu.dict.utf8' // osu特有词汇
-    });
+
+    // 排除没有疑问词的消息
+    const ywc = ['吗', '呢', '啊', '吧', '么', '嘛', '呀', '呐'];
+    let isQuestion = false;
+    for(let c of ywc) {
+        if (ask.includes(c)) {
+            isQuestion = true;
+            break;
+        }
+    }
+    if (isQuestion === false) return reply.no();
+
     let result = nodejieba.tag(ask); // [{word: string, tag: string}, ...{}]
     //console.log(result);
 
@@ -257,7 +270,7 @@ module.exports.apply = (ctx) => {
 };
 
 // test
-/*
+
 
 let readline = require('readline');
 const rl = readline.createInterface({
@@ -279,4 +292,4 @@ rl.on('close', function () {
     process.exit();
 });
 
-*/
+
