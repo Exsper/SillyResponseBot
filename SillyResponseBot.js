@@ -184,7 +184,7 @@ function doOrNot(ask) {
     //用jieba解析字符串
     const nodejieba = require("nodejieba");
     nodejieba.load({
-        userDict: './osu.dict.utf8' // osu特有词汇
+        userDict: __dirname+'/osu.dict.utf8' // osu特有词汇
     });
     let result = nodejieba.tag(ask); // [{word: string, tag: string}, ...{}]
     //console.log(result);
