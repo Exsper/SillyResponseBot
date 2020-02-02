@@ -1,8 +1,8 @@
 {
   "name": "silly-response-bot",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "SillyResponseBot",
-  "main": "SillyResponseBot.js",
+  "main": "index.js",
   "author": {
     "name": "Exsper"
   },

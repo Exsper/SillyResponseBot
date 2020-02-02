@@ -14,7 +14,10 @@ const finder = require('./findBuilder');
 //     return r;
 // }
 
-
+// TODO
+// 1. 完善自定义词典
+// 2. 完善分词和关键词判断
+// 3. 重复问题统一答案（类似于复读），或者加一种回答“不要再问啦！”，要用到koishi的上下文
 
 let b = new finder();
 // Koishi插件名
@@ -49,7 +52,7 @@ module.exports.apply = (ctx) => {
 
 // test
 
-/*
+
 let readline = require('readline');
 const rl = readline.createInterface({
     input: process.stdin,
@@ -79,4 +82,3 @@ rl.on('close', function () {
     process.exit();
 });
 
-*/
