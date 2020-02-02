@@ -12,7 +12,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>23db9b64-500d-4353-8f7a-e8e53ce7fb24</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>SillyResponseBot.js</StartupFile>
+    <StartupFile>index.js</StartupFile>
     <StartWebBrowser>False</StartWebBrowser>
     <SearchPath>
     </SearchPath>
@@ -29,10 +29,22 @@
     <DebugSymbols>true</DebugSymbols>
   </PropertyGroup>
   <ItemGroup>
-    <Content Include="osu.dict.utf8" />
-    <Content Include="SillyResponseBot.js" />
+    <Content Include="bin\Microsoft.NodejsTools.WebRole.dll" />
+    <Content Include="builders\AorA.js" />
+    <Content Include="builders\DoOrNot.js" />
+    <Content Include="builders\osu.dict.utf8" />
+    <Content Include="findBuilder.js" />
+    <Content Include="sendMessageObject.js">
+      <SubType>Code</SubType>
+    </Content>
+    <Content Include="ReplyObject.js" />
+    <Content Include="index.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="bin\" />
+    <Folder Include="builders\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>

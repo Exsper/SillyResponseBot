@@ -69,13 +69,18 @@ function doOrNot(ask) {
     } else {
         if (aIndex > 0 && yIndex - aIndex <= 1) vIndex = aIndex;
     }
+    // 如果动词前一个词也是动词，则取前一个词，比如“喜欢吃糖吗”->喜欢/不喜欢，而不是吃/不吃
+    if (vIndex > 0 && result[vIndex - 1].tag === "v") vIndex -= 1;
+
     let vWord = result[vIndex].word;
     if (vWord.substring(0, 1) === "不") vWord = vWord.substring(1); // 防止出现"不不v"的情况
 
-    // strp3: 判断语气词y前一个词的词性，选择对应回复
+    // step3: 判断语气词y前一个词的词性，选择对应回复
     // 现在暂时只回答动词，不是连贯句子
     if (result[yIndex - 1].word === "什么") return reply.no(); // 不是选择性疑问句
-    else if (ask.indexOf("是") >= 0) reply.choices = ['是', '不是']; // 直接从原句中找“是”更好
+    else if (ask.indexOf("是") >= 0) reply.choices = ['是', '不是']; // 直接从原句中找“是”更好，因为分析有可能不会单独拆下“是”，下面几个同理
+    else if (ask.indexOf("会") >= 0) reply.choices = ['会', '不会'];
+    else if (ask.indexOf("能") >= 0) reply.choices = ['能', '不能'];
     else if (result[yIndex - 1].word === "了") reply.choices = [`${vWord}了`, `没${vWord}`];
     else reply.choices = [vWord, `不${vWord}`];
     return reply;
