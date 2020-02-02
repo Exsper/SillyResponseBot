@@ -37,7 +37,8 @@ module.exports.apply = (ctx) => {
                         // 在回复之前，先看看是不是相同问题！
                         let smo = new sendMessageObject(meta, r, replyString);
                         let sms = smo.recordAndSendMessage();
-                        if (sms !== "") return meta.$send(sms); // 小阿日不想理你
+                        //considering move the send action to the sendMessageObject @Exsper
+                        //if (sms !== "") return meta.$send(sms); // 小阿日不想理你
                     }
                 }
                 return next();
