@@ -108,8 +108,8 @@ sendMessageObject.prototype.replyNoBother = function(times = this.times) {
     else return "";
 }
 
-//using async to cut down the main process time
-sendMessageObject.prototype.send = function() {
+//generate reply message
+sendMessageObject.prototype.craftMessage = function() {
     let message = '';
     if (this.times <= 1) message = this.replyString;
     else if (this.times < botherLeastTimes) message = `都说了${smo.replyString}呀！`;
@@ -118,7 +118,14 @@ sendMessageObject.prototype.send = function() {
         //silence the sender because I AM ANGRY
         this.meta.$ban(this.times * 60);
     }
+    return message;
+}
+
+//using async to cut down the main process time
+sendMessageObject.prototype.send = async function() {
+    const message = this.craftMessage();
     if (message !== "") return this.meta.$send(message);
+    else return false;
 }
 
 /* #endregion */
