@@ -1,5 +1,5 @@
-const AorA = require('./builders/AorA');
-const doOrNot = require('./builders/DoOrNot');
+const AorA = require('builders/AorA');
+const doOrNot = require('builders/DoOrNot');
 
 //match the replyObject builder function.
 function findBuilder() {

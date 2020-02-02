@@ -7,6 +7,7 @@
     "name": "Exsper"
   },
   "dependencies": {
+    "app-module-path": "^2.2.0",
     "node-gyp": "^6.1.0",
     "nodejieba": "^2.4.0"
   }
