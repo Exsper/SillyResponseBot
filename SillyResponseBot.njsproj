@@ -34,6 +34,9 @@
     <Content Include="builders\DoOrNot.js" />
     <Content Include="builders\osu.dict.utf8" />
     <Content Include="findBuilder.js" />
+    <Content Include="sendMessageObject.js">
+      <SubType>Code</SubType>
+    </Content>
     <Content Include="ReplyObject.js" />
     <Content Include="index.js" />
     <Content Include="package.json" />
