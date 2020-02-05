@@ -33,11 +33,10 @@
     <Content Include="builders\AorA.js" />
     <Content Include="builders\DoOrNot.js" />
     <Content Include="builders\osu.dict.utf8" />
-    <Content Include="findBuilder.js" />
-    <Content Include="sendMessageObject.js">
-      <SubType>Code</SubType>
-    </Content>
-    <Content Include="ReplyObject.js" />
+    <Content Include="objects\.DS_Store" />
+    <Content Include="objects\findBuilder.js" />
+    <Content Include="objects\ReplyObject.js" />
+    <Content Include="objects\sendMessageObject.js" />
     <Content Include="index.js" />
     <Content Include="package.json" />
     <Content Include="README.md" />
@@ -45,6 +44,7 @@
   <ItemGroup>
     <Folder Include="bin\" />
     <Folder Include="builders\" />
+    <Folder Include="objects\" />
   </ItemGroup>
   <Import Project="$(VSToolsPath)\Node.js Tools\Microsoft.NodejsToolsV2.targets" />
 </Project>

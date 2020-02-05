@@ -71,30 +71,18 @@ function sendMessageObject(meta, replyObject, replyString) {
     this.times = 1;
 }
 
-//suggest split the record and send section and make a shortcut for this @Expser
-//suggest not to access variables outside the object. @Expser
-// sendMessageObject.prototype.recordAndSendMessage = function() {
-//     //smo is this and object is passed by reference so any changes made on smo will reflect to this.
-//     let smo = smc.put(this);
-//     let times = smo.times;
-
-//     if (times <= 1) return smo.replyString;
-//     else if (times < botherLeastTimes) return "都说了" + smo.replyString + "呀！";
-//     else return replyNoBother(times);
-// };
-
 //using async to cut down the main process time
-sendMessageObject.prototype.recordAndSendMessage = async function() {
+sendMessageObject.prototype.recordAndSendMessage = async function () {
     return this.record().send();
-}
-sendMessageObject.prototype.record = function() {
+};
+sendMessageObject.prototype.record = function () {
     smc.put(this);
     return this;
-}
-sendMessageObject.prototype.getRndInteger = function(min, max) {
+};
+sendMessageObject.prototype.getRndInteger = function (min, max) {
     return Math.floor(Math.random() * (max - min)) + min;
-}
-sendMessageObject.prototype.replyNoBother = function(times = this.times) {
+};
+sendMessageObject.prototype.replyNoBother = function (times = this.times) {
     const replys = [
         "别再问我啦", "你已经问了好多遍了", "听不见吗", "还听不见吗", "别问啦！", "够啦！",
         "...", "？", "你好烦啊", "讨厌！", "不作回答", "你还问！", "好烦呀！", "哼！",
@@ -103,30 +91,30 @@ sendMessageObject.prototype.replyNoBother = function(times = this.times) {
         "zzz", "但是我拒绝", "您已被管理员禁言", "您已被移出群聊", "核弹已升空"
     ];
     // times越大，越可能选到靠后的语句（算法还待改进？
-    if (times < refuseReplyTimes) return replys[Math.floor(this.getRndInteger((1 - botherLeastTimes / times) * replys.length, Math.sqrt(times / (refuseReplyTimes - 1)) * replys.length))];
-    else if (times === refuseReplyTimes) return "小阿日不理你了";
+    if (times < this.refuseReplyTimes) return replys[Math.floor(this.getRndInteger((1 - this.botherLeastTimes / times) * replys.length, Math.sqrt(times / (this.refuseReplyTimes - 1)) * replys.length))];
+    else if (times === this.refuseReplyTimes) return "小阿日不理你了";
     else return "";
-}
+};
 
 //generate reply message
-sendMessageObject.prototype.craftMessage = function() {
+sendMessageObject.prototype.craftMessage = function () {
     let message = '';
     if (this.times <= 1) message = this.replyString;
-    else if (this.times < botherLeastTimes) message = `都说了${smo.replyString}呀！`;
+    else if (this.times < this.botherLeastTimes) message = `都说了${this.replyString}呀！`;
     else {
         message = this.replyNoBother();
         //silence the sender because I AM ANGRY
-        this.meta.$ban(this.times * 60);
+        if (this.times > this.refuseReplyTimes) this.meta.$ban(this.times * 60);
     }
     return message;
-}
+};
 
 //using async to cut down the main process time
-sendMessageObject.prototype.send = async function() {
+sendMessageObject.prototype.send = async function () {
     const message = this.craftMessage();
     if (message !== "") return this.meta.$send(message);
     else return false;
-}
+};
 
 /* #endregion */
 

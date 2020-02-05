@@ -13,7 +13,6 @@ const sendMessageObject = require('objects/sendMessageObject');
 // TODO
 // 1. 完善自定义词典
 // 2. 完善分词和关键词判断
-// 3. 重复问题统一答案（类似于复读），或者加一种回答“不要再问啦！”，要用到koishi的上下文
 
 let b = new finder();
 // Koishi插件名
@@ -36,9 +35,7 @@ module.exports.apply = (ctx) => {
                     if (replyString) {
                         // 在回复之前，先看看是不是相同问题！
                         let smo = new sendMessageObject(meta, r, replyString);
-                        let sms = smo.recordAndSendMessage();
-                        //considering move the send action to the sendMessageObject @Exsper
-                        //if (sms !== "") return meta.$send(sms); // 小阿日不想理你
+                        smo.recordAndSendMessage();
                     }
                 }
                 return next();
@@ -57,6 +54,12 @@ module.exports.apply = (ctx) => {
 /*
 let myQQ = "1";
 console.log("你的QQ号是1了");
+// 模拟meta
+function meta(qqId) {
+    this.userId = qqId;
+}
+meta.prototype.$send = function (s) { console.log(s); };
+meta.prototype.$ban = function (t) { console.log("你已被禁言 " + t + " 秒"); };
 
 let readline = require('readline');
 const rl = readline.createInterface({
@@ -76,6 +79,7 @@ rl.on('line', function (line) {
         console.log("你的QQ号是1了");
     }
 
+
     else if (ask.startsWith("!") || ask.startsWith("！")) {
         try {
             let str = ask.substring(1).trim();
@@ -87,9 +91,8 @@ rl.on('line', function (line) {
                     let replyString = r.toString();
                     if (replyString) {
                         // 在回复之前，先看看是不是相同问题！
-                        let smo = new sendMessageObject({ userId: myQQ }, r, replyString);
-                        let sms = smo.recordAndSendMessage();
-                        if (sms !== "") console.log(sms);
+                        let smo = new sendMessageObject(new meta(myQQ), r, replyString);
+                        smo.recordAndSendMessage();
                     }
                 }
             }

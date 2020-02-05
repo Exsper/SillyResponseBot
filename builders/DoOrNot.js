@@ -1,4 +1,4 @@
-const ReplyObject = require('../ReplyObject');
+const ReplyObject = require('objects/ReplyObject');
 
 //用jieba解析字符串
 const nodejieba = require("nodejieba");

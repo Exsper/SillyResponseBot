@@ -30,9 +30,9 @@ ReplyObject.prototype.format = function(formatter) {
 };
 
 //get last response message
-ReplyObject.prototype.getLastReply = function() {
+ReplyObject.prototype.getLastReply = function () {
     return this.replies[this.replies.length - 1];
-}
+};
 
 //get an string response as well as record them 
 ReplyObject.prototype.toString = function() {

@@ -1,7 +1,8 @@
 # SillyResponseBot
 
-## require
+## npm
 ```sh
 npm install node-gyp  
 npm install nodejieba  
+npm install app-module-path  
 ```
