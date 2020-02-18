@@ -8,6 +8,15 @@ const sendMessageObject = require('objects/sendMessageObject');
 
 const simplify = require('koishi-utils').simplify;
 
+
+
+// html转意符换成普通字符
+function escape2Html(str) {
+    var arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"' };
+    return str.replace(/&(lt|gt|nbsp|amp|quot);/ig, function (all, t) { return arrEntities[t]; });
+}
+
+
 let b = new finder();
 
 let myQQ = "1";
@@ -40,7 +49,9 @@ rl.on('line', function (line) {
 
     else if (ask.startsWith("!") || ask.startsWith("！")) {
         try {
-            let str = simplify(ask.substring(1).trim());   // 简体化
+            let str = ask.substring(1).trim();
+            str = escape2Html(str);   // 处理转义字符
+            str = simplify(str);   // 简体化
             const builder = b.returnBuilderIfMatched(str);
             if (builder) {
                 const r = builder(str);

@@ -9,9 +9,16 @@ const sendMessageObject = require('objects/sendMessageObject');
 const simplify = require('koishi-utils').simplify;
 
 
-
 // TODO
 // 1. cq code
+
+// html转意符换成普通字符
+function escape2Html(str) {
+    var arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"' };
+    return str.replace(/&(lt|gt|nbsp|amp|quot);/ig, function (all, t) { return arrEntities[t]; });
+}
+
+
 
 let b = new finder();
 // Koishi插件名
@@ -23,7 +30,9 @@ module.exports.apply = (ctx) => {
         ask = ask.trim();
         if (ask.startsWith("!") || ask.startsWith("！")) {
             try {
-                let str = simplify(ask.substring(1).trim());   // 简体化
+                let str = ask.substring(1).trim();
+                str = escape2Html(str);   // 处理转义字符
+                str = simplify(str);   // 简体化
                 // let r = getReply(str);
                 const builder = b.returnBuilderIfMatched(str);
                 if (!builder) return next();
