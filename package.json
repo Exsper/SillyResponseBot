@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "app-module-path": "^2.2.0",
+    "koishi": "^1.8.1",
     "node-gyp": "^6.1.0",
     "nodejieba": "^2.4.0"
   }
