@@ -6,7 +6,7 @@ require('app-module-path/cwd');
 const finder = require('objects/findBuilder');
 const sendMessageObject = require('objects/sendMessageObject');
 
-const simplify = require('koishi-utils').simplify;
+//const simplify = require('koishi-utils').simplify;
 
 
 
@@ -51,7 +51,7 @@ rl.on('line', function (line) {
         try {
             let str = ask.substring(1).trim();
             str = escape2Html(str);   // 处理转义字符
-            str = simplify(str);   // 简体化
+            //str = simplify(str);   // 简体化
             const builder = b.returnBuilderIfMatched(str);
             if (builder) {
                 const r = builder(str);
