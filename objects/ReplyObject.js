@@ -1,4 +1,7 @@
-/* #region ReplyObject */
+'use strict';
+
+const AskObject = require('objects/askObject');
+
 function ReplyObject(ask) {
     //initial vars 
     this.reply = true;
@@ -8,6 +11,7 @@ function ReplyObject(ask) {
 
     //should be the message sent in removed any hinting chars.
     this.ask = ask;
+    this.askObject = new AskObject(this.ask);
 
     //set the default action to randomly pick an response in the choices array.
     this.formatter = function() {
@@ -17,9 +21,13 @@ function ReplyObject(ask) {
     };
 }
 
-//set the choices. choices should be an Array or Iterable(TODO in the future).
-ReplyObject.prototype.choices = function(choices) {
-    this.choices = choices;
+ReplyObject.prototype.getNoneCQCodeAsk = function() {
+    return this.askObject.cutQRCode();
+};
+
+
+ReplyObject.prototype.setChoices = function(choices) {
+    this.choices = choices.map(str => this.askObject.reputQRCode(str));
     return this;
 };
 
@@ -61,5 +69,5 @@ ReplyObject.prototype.flipPosition = function(str) {
     this.choices = this.choices.map(str => str.split("").map(char => (char === '我') ? '你' : (char === '你' ? '我' : char)).join(""));
 };
 
-/* #endregion */
+
 module.exports = ReplyObject;

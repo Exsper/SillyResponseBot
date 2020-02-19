@@ -31,6 +31,7 @@ function LookForTheSame(s1, s2) {
  */
 function AorA(ask) {
     let reply = new ReplyObject(ask);
+    ask = reply.getNoneCQCodeAsk();
 
     // 排除不含“不”、含“不不”、过长或过短的消息
     // if (!ask.includes("不") || ask.includes("不不") || ask.length > 30 || ask.length < 3) return reply.no();
@@ -99,7 +100,7 @@ function AorA(ask) {
     // 将“我”改成“你”，“你”改成“我”
     //let replyStringFix = positionFlip(replyString);
 
-    reply.choices = [replyString, `不${replyString}`];
+    reply.setChoices([replyString, `不${replyString}`]);
     reply.flipPosition();
     return reply;
 }

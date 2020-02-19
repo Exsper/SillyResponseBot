@@ -40,6 +40,7 @@ function lastIndexOfA(result, end = result.length - 1) {
 
 function doOrNot(ask) {
     let reply = new ReplyObject(ask);
+    ask = reply.getNoneCQCodeAsk();
 
     // 排除没有疑问词的消息
     // const ywc = ['吗', '呢', '啊', '吧', '么', '嘛', '呀', '呐'];
@@ -78,11 +79,11 @@ function doOrNot(ask) {
     // step3: 判断语气词y前一个词的词性，选择对应回复
     // 现在暂时只回答动词，不是连贯句子
     if (result[yIndex - 1].word === "什么") return reply.no(); // 不是选择性疑问句
-    else if (ask.indexOf("是") >= 0) reply.choices = ['是', '不是']; // 直接从原句中找“是”更好，因为分析有可能不会单独拆下“是”，下面几个同理
-    else if (ask.indexOf("会") >= 0) reply.choices = ['会', '不会'];
-    else if (ask.indexOf("能") >= 0) reply.choices = ['能', '不能'];
-    else if (result[yIndex - 1].word === "了") reply.choices = [`${vWord}了`, `没${vWord}`];
-    else reply.choices = [vWord, `不${vWord}`];
+    else if (ask.indexOf("是") >= 0) reply.setChoices(['是', '不是']); // 直接从原句中找“是”更好，因为分析有可能不会单独拆下“是”，下面几个同理
+    else if (ask.indexOf("会") >= 0) reply.setChoices(['会', '不会']);
+    else if (ask.indexOf("能") >= 0) reply.setChoices(['能', '不能']);
+    else if (result[yIndex - 1].word === "了") reply.setChoices([`${vWord}了`, `没${vWord}`]);
+    else reply.setChoices([vWord, `不${vWord}`]);
     return reply;
 }
 

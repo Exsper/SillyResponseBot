@@ -54,7 +54,7 @@ let handle = 0;
 function sendMessageObject(meta, replyObject, replyString) {
     //initial consts
     // 随机回复抱怨语句
-    this.botherLeastTimes = 3; // 相同提问第3次开始就回复抱怨语句
+    this.botherLeastTimes = 4; // 相同提问第4次开始就回复抱怨语句
     this.refuseReplyTimes = 10; // 相同提问大于10次不再回复
 
     // 记录回复对象（QQ号）、对象提出问题、回复时间、回复内容、出现次数
@@ -100,7 +100,8 @@ sendMessageObject.prototype.replyNoBother = function (times = this.times) {
 sendMessageObject.prototype.craftMessage = function () {
     let message = '';
     if (this.times <= 1) message = this.replyString;
-    else if (this.times < this.botherLeastTimes) message = `都说了${this.replyString}呀！`;
+    else if (this.times < this.botherLeastTimes) message = this.replyString + "！".repeat(this.times);
+    else if (this.times === this.botherLeastTimes) message = `都说了${this.replyString}呀！`;
     else {
         message = this.replyNoBother();
         //silence the sender because I AM ANGRY

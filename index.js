@@ -6,18 +6,10 @@ require('app-module-path/cwd');
 const finder = require('objects/findBuilder');
 const sendMessageObject = require('objects/sendMessageObject');
 
-//const simplify = require('koishi-utils').simplify;
 
 
 // TODO
 // 1. cq code
-
-// html转意符换成普通字符
-function escape2Html(str) {
-    var arrEntities = { 'lt': '<', 'gt': '>', 'nbsp': ' ', 'amp': '&', 'quot': '"' };
-    return str.replace(/&(lt|gt|nbsp|amp|quot);/ig, function (all, t) { return arrEntities[t]; });
-}
-
 
 
 let b = new finder();
@@ -31,9 +23,6 @@ module.exports.apply = (ctx) => {
         if (ask.startsWith("!") || ask.startsWith("！")) {
             try {
                 let str = ask.substring(1).trim();
-                str = escape2Html(str);   // 处理转义字符
-                // str = simplify(str);   // 简体化
-                // let r = getReply(str);
                 const builder = b.returnBuilderIfMatched(str);
                 if (!builder) return next();
                 const r = builder(str);

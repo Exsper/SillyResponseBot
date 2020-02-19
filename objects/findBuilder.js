@@ -1,3 +1,5 @@
+'use strict';
+
 const AorA = require('builders/AorA');
 const doOrNot = require('builders/DoOrNot');
 
@@ -8,7 +10,7 @@ function findBuilder() {
             builder: doOrNot
         },
         {
-            matcher: (s) => (s.includes("不") && !s.includes("不不") && s.length <= 30 && s.length >= 3),
+            matcher: (s) => (s.includes("不") && !s.includes("不不") && s.length >= 3),
             builder: AorA
         }
     ];
