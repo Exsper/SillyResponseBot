@@ -42,18 +42,13 @@ rl.on('line', function (line) {
         try {
             let str = ask.substring(1).trim();
             const builder = b.returnBuilderIfMatched(str);
-            if (builder) {
-                const r = builder(str);
-                if (r.reply) {
-                    //console.log(r.choices);
-                    let replyString = r.toString();
-                    if (replyString) {
-                        // 在回复之前，先看看是不是相同问题！
-                        let smo = new sendMessageObject(new meta(myQQ), r, replyString);
-                        smo.recordAndSendMessage();
-                    }
-                }
-            }
+            if (!builder) return;
+            const r = builder(str);
+            if (!r.reply) return;
+            let replyString = r.toString();
+            if (!replyString) return;
+            let smo = new sendMessageObject(new meta(myQQ), r, replyString);
+            smo.recordAndSendMessage();
         } catch (ex) {
             console.log(ex);
         }

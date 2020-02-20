@@ -26,16 +26,11 @@ module.exports.apply = (ctx) => {
                 const builder = b.returnBuilderIfMatched(str);
                 if (!builder) return next();
                 const r = builder(str);
-                if (r.reply) {
-                    //console.log(r.choices);
-                    let replyString = r.toString();
-                    if (replyString) {
-                        // 在回复之前，先看看是不是相同问题！
-                        let smo = new sendMessageObject(meta, r, replyString);
-                        smo.recordAndSendMessage();
-                    }
-                }
-                return next();
+                if (!r.reply) return next();
+                let replyString = r.toString();
+                if (!replyString) return next();
+                let smo = new sendMessageObject(new meta(myQQ), r, replyString);
+                smo.recordAndSendMessage();
             } catch (ex) {
                 console.log(ex);
                 return next();
