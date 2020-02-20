@@ -29,7 +29,7 @@ module.exports.apply = (ctx) => {
                 if (!r.reply) return next();
                 let replyString = r.toString();
                 if (!replyString) return next();
-                let smo = new sendMessageObject(new meta(myQQ), r, replyString);
+                let smo = new sendMessageObject(meta, r, replyString);
                 smo.recordAndSendMessage();
             } catch (ex) {
                 console.log(ex);
