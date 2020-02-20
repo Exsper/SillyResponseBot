@@ -34,9 +34,9 @@ segment
     // .loadStopwordDict('stopword.txt') // 停止符
 
     // 自定义词典
-    .loadDict(path.join(__dirname, '../segmentUserDict/ywc.txt'))  // 疑问词
-    .loadDict(path.join(__dirname, '../segmentUserDict/osu.txt'))  // osu专用语
     .loadDict(path.join(__dirname, '../segmentUserDict/singledict.txt'))  // 复制原dict，删除一些词组，防止词组改变词性
+    .loadDict(path.join(__dirname, '../segmentUserDict/osu.txt'))  // osu专用语
+    .loadDict(path.join(__dirname, '../segmentUserDict/ywc.txt'))  // 疑问词
 
 
 // 倒序(end -> start)查找语气词y，返回语气词y在解析结果中的index
@@ -47,17 +47,6 @@ function lastIndexOfY(result, end = result.length - 1) {
     }
     // 没有找到语气词
     return -1;
-}
-
-
-function isResultContainWord(result, word) {
-    let isContain = false;
-    result.forEach((r, i) => {
-        if (r.w === word) {
-            isContain = true;
-        }
-    });
-    return isContain;
 }
 
 // 倒序(end -> start)查找形容词或动词，返回形容词或动词在解析结果中的index
@@ -81,6 +70,10 @@ function getAVWords(result, end = result.length - 1) {
             word = result[index].w + word;
             index = index - 1;
         }
+        else if (result[index].w === "了" || result[index].w === "得") {
+            word = result[index].w + word;
+            index = index - 1;
+        }
         else {
             index = index + 1;
             break;
@@ -88,6 +81,17 @@ function getAVWords(result, end = result.length - 1) {
     }
     if (index < 0) index = 0;
     return { index: index, word: word };
+}
+
+
+function isResultContainWord(result, word) {
+    let isContain = false;
+    result.forEach((r, i) => {
+        if (r.w === word) {
+            isContain = true;
+        }
+    });
+    return isContain;
 }
 
 
@@ -117,6 +121,8 @@ function doOrNot(ask) {
     else if (isResultContainWord(result, "是")) reply.setChoices(['是', '不是']); // 直接从原句中找“是”更好，因为分析有可能不会单独拆下“是”，下面几个同理
     else if (isResultContainWord(result, "会")) reply.setChoices(['会', '不会']);
     else if (isResultContainWord(result, "能")) reply.setChoices(['能', '不能']);
+    else if (vWord.length > 2 && vWord[vWord.length - 2] == "不") reply.setChoices([`${vWord}`, `${vWord.substring(0, vWord.length - 2) + "得" + vWord.substring(vWord.length - 1)}`]);
+    else if (vWord.length > 2 && vWord[vWord.length - 2] == "得") reply.setChoices([`${vWord}`, `${vWord.substring(0, vWord.length - 2) + "不" + vWord.substring(vWord.length - 1)}`]);
     else if (result[yIndex - 1].w === "了") reply.setChoices([`${vWord}了`, `没${vWord}`]);
     else if (vWord.substring(vWord.length - 1) === "了") reply.setChoices([`${vWord}`, `没${vWord.substring(0, vWord.length - 1)}`]);
     else reply.setChoices([vWord, `不${vWord}`]);
