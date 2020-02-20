@@ -11,13 +11,14 @@ function sentMessageCollection() {
 
 sentMessageCollection.prototype.add = function(smo) {
     this.sentMessages.push(smo);
-    this.timeouts[smo.handle] = setTimeout((smo) => this.remove(smo), 1000 * 60 * 5, smo);
+    this.timeouts[smo.handle] = setTimeout((smo) => this.remove(smo), 1000 * 60 * 1, smo);
 };
 
 sentMessageCollection.prototype.remove = function(smo) {
     this.sentMessages = this.sentMessages.filter(item => item.handle !== smo.handle);
     if (this.timeouts[smo.handle] !== undefined) {
         clearTimeout(this.timeouts[smo.handle]);
+        delete this.timeouts[smo.handle];
     }
 };
 
@@ -105,7 +106,7 @@ sendMessageObject.prototype.craftMessage = function () {
     else {
         message = this.replyNoBother();
         //silence the sender because I AM ANGRY
-        if (this.times > this.refuseReplyTimes) this.meta.$ban(this.times * 60);
+        if (this.times > this.refuseReplyTimes) this.meta.$ban(this.times * 10);
     }
     return message;
 };

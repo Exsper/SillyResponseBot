@@ -42,7 +42,7 @@ segment
 // 倒序(end -> start)查找语气词y，返回语气词y在解析结果中的index
 function lastIndexOfY(result, end = result.length - 1) {
     for (let i = end; i >= 0; i--) {
-        if (result[i].tag.indexOf("语气词") >= 0 || result[i].w[0] === "了")
+        if (result[i].p === 0x200 || result[i].w[0] === "了")
             return i;
     }
     // 没有找到语气词
@@ -52,7 +52,7 @@ function lastIndexOfY(result, end = result.length - 1) {
 // 倒序(end -> start)查找形容词或动词，返回形容词或动词在解析结果中的index
 function lastIndexOfAV(result, end = result.length - 1) {
     for (let i = end; i >= 0; i--) {
-        if (result[i].tag.indexOf("形容词") >= 0 || result[i].tag.indexOf("动词") >= 0)
+        if (result[i].p === 0x40000000 || result[i].p === 0x1000)
             return i;
     }
     // 没有找到形容词或动词
@@ -66,7 +66,7 @@ function getAVWords(result, end = result.length - 1) {
     if (index < 0) return { index: -1, word: "" };
     let word = "";
     while (index >= 0) {
-        if (result[index].tag.indexOf("形容词") >= 0 || result[index].tag.indexOf("动词") >= 0) {
+        if (result[index].p === 0x40000000 || result[index].p === 0x1000) {
             word = result[index].w + word;
             index = index - 1;
         }
@@ -103,7 +103,8 @@ function doOrNot(ask) {
         stripPunctuation: true // 去除标点
     });
     // tag中文化，暂时用中文字符判断以方便调试，如果词典完善了的话会把tag判断条件全部改为原始数值p
-    result.forEach(words => { words.tag = Segment.POSTAG.chsName(words.p) });
+    // https://github.com/leizongmin/node-segment/blob/master/lib/POSTAG.js
+    // result.forEach(words => { words.tag = Segment.POSTAG.chsName(words.p) });
 
     // 倒序查询语气词y
     let yIndex = lastIndexOfY(result);
