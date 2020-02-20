@@ -1,4 +1,4 @@
-const ReplyObject = require('../objects/ReplyObject');
+'use strict';
 const path = require('path');
 
 // segment分词
@@ -34,9 +34,9 @@ segment
     // .loadStopwordDict('stopword.txt') // 停止符
 
     // 自定义词典
-    .loadDict(path.join(__dirname, '../segmentUserDict/ywc.txt'))  // 疑问词
-    .loadDict(path.join(__dirname, '../segmentUserDict/osu.txt'))  // osu专用语
-    .loadDict(path.join(__dirname, '../segmentUserDict/singledict.txt'))  // 复制原dict，删除一些词组，防止词组改变词性
+    .loadDict(path.join(__dirname, '/segmentUserDict/ywc.txt'))  // 疑问词
+    .loadDict(path.join(__dirname, '/segmentUserDict/osu.txt'))  // osu专用语
+    .loadDict(path.join(__dirname, '/segmentUserDict/singledict.txt'))  // 复制原dict，删除一些词组，防止词组改变词性
 
 
 // 倒序(end -> start)查找语气词y，返回语气词y在解析结果中的index
@@ -91,38 +91,41 @@ function getAVWords(result, end = result.length - 1) {
 }
 
 
-function doOrNot(ask) {
-    let reply = new ReplyObject(ask);
-    ask = reply.getNoneCQCodeAsk();
 
-    let result = segment.doSegment(ask, {
-        stripPunctuation: true // 去除标点
-    });
-    // tag中文化，暂时用中文字符判断以方便调试，如果词典完善了的话会把tag判断条件全部改为原始数值p
-    result.forEach(words => { words.tag = Segment.POSTAG.chsName(words.p) });
-
+function doOrNot(result) {
     // 倒序查询语气词y
     let yIndex = lastIndexOfY(result);
-    if (yIndex < 1) return reply.no(); // 单独一个“吗”字也不行
+    if (yIndex < 1) return "没有语气词"; // 单独一个“吗”字也不行
 
     // 从语气词y倒叙查询动词形容词av
     let av = getAVWords(result, yIndex);
-    if (av.index < 0) return reply.no();
+    if (av.index < 0) return "没有找到动词/形容词";
     let vWord = av.word;
 
     if (vWord.substring(0, 1) === "不") vWord = vWord.substring(1); // 防止出现"不不v"的情况
 
     // 判断语气词y前一个词的词性，选择对应回复
-    if (result[yIndex - 1].w === "什么") return reply.no(); // 不是选择性疑问句
-    else if (isResultContainWord(result, "是")) reply.setChoices(['是', '不是']); // 直接从原句中找“是”更好，因为分析有可能不会单独拆下“是”，下面几个同理
-    else if (isResultContainWord(result, "会")) reply.setChoices(['会', '不会']);
-    else if (isResultContainWord(result, "能")) reply.setChoices(['能', '不能']);
-    else if (result[yIndex - 1].w === "了") reply.setChoices([`${vWord}了`, `没${vWord}`]);
-    else if (vWord.substring(vWord.length - 1) === "了") reply.setChoices([`${vWord}`, `没${vWord.substring(0, vWord.length - 1)}`]);
-    else reply.setChoices([vWord, `不${vWord}`]);
-
-    return reply;
+    if (result[yIndex - 1].w === "什么") return "不是选择性疑问句"; // 不是选择性疑问句
+    else if (isResultContainWord(result, "是")) return ['是', '不是']; // 直接从原句中找“是”更好，因为分析有可能不会单独拆下“是”，下面几个同理
+    else if (isResultContainWord(result, "会")) return ['会', '不会'];
+    else if (isResultContainWord(result, "能")) return ['能', '不能'];
+    else if (result[yIndex - 1].w === "了") return [`${vWord}了`, `没${vWord}`];
+    else if (vWord.substring(vWord.length - 1) === "了") return [`${vWord}`, `没${vWord.substring(0, vWord.length - 1)}`];
+    else return [vWord, `不${vWord}`];
 }
 
 
-module.exports = doOrNot;
+
+let readline = require('readline');
+const rl = readline.createInterface({
+    input: process.stdin,
+    output: process.stdout
+});
+rl.on('line', function (line) {
+    let result = segment.doSegment(line, {
+        stripPunctuation: true // 去除标点
+    });
+    result.forEach(words => { words.tag = Segment.POSTAG.chsName(words.p) });
+    console.log(result);
+    console.log(doOrNot(result));
+});
