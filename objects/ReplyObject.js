@@ -1,6 +1,6 @@
 'use strict';
 
-const AskObject = require('objects/askObject');
+const AskObject = require('./askObject');
 
 function ReplyObject(ask) {
     //initial vars 

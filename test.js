@@ -1,10 +1,10 @@
 'use strict';
 //for better includes..
-require('app-module-path/cwd');
+//require('app-module-path/cwd');
 
 
-const finder = require('objects/findBuilder');
-const sendMessageObject = require('objects/sendMessageObject');
+const finder = require('./objects/findBuilder');
+const sendMessageObject = require('./objects/sendMessageObject');
 
 
 
