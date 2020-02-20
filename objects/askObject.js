@@ -40,7 +40,7 @@ class askObject {
         return this.replacedMsg;
         */
         const _this = this;
-        return this.ask.replace(/\[(.+?)\]/g, function (matchString, group, index, orgString) {
+        let output = this.ask.replace(/\[(.+?)\]/g, function (matchString, group, index, orgString) {
             let replacedIndex = _this.replaceObjects.indexOf(matchString);
             if (replacedIndex < 0) {
                 let replaceText = "[cqObjcet" + index + "]";
@@ -52,6 +52,7 @@ class askObject {
                 return _this.replaceTexts[replacedIndex];
             }
         });
+        return this.removeReturn(this.escape2Html(output));
     }
 
     reputQRCode(replymsg) {
