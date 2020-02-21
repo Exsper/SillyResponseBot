@@ -129,7 +129,7 @@ const rl = readline.createInterface({
 });
 rl.on('line', function (line) {
     let result = segment.doSegment(line, {
-        stripPunctuation: true // 去除标点
+        // stripPunctuation: true // 去除标点
     });
     result.forEach(words => { words.tag = Segment.POSTAG.chsName(words.p) });
     console.log(result);

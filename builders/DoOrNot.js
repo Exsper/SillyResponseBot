@@ -102,7 +102,6 @@ function doOrNot(ask) {
     let result = segment.doSegment(ask, {
         stripPunctuation: true // 去除标点
     });
-    // tag中文化，暂时用中文字符判断以方便调试，如果词典完善了的话会把tag判断条件全部改为原始数值p
     // https://github.com/leizongmin/node-segment/blob/master/lib/POSTAG.js
     // result.forEach(words => { words.tag = Segment.POSTAG.chsName(words.p) });
 
