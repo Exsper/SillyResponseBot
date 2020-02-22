@@ -45,7 +45,7 @@ sendMessageObject.prototype.craftMessage = function () {
     else {
         message = this.replyNoBother();
         //silence the sender because I AM ANGRY
-        if (this.times === this.refuseReplyTimes) this.meta.$ban(this.times * 10);
+        if (this.times >= this.refuseReplyTimes) this.meta.$ban(this.times * 10);
     }
     return message;
 };

@@ -23,7 +23,7 @@ class QuestionTypeHelper {
 
     // 反问句 需要排除
     static isRhetorical(s) {
-        const keyWords = ["难道", "这么", "那么", "不是吗"];
+        const keyWords = ["难道", "不是吗"];
         return keyWords.some(function (item, index) {
             if (s.includes(item)) return true;
         })
