@@ -1,5 +1,6 @@
+'use strict';
+
 const ReplyObject = require('../objects/ReplyObject');
-/* #region AorA */
 
 /**
  * 寻找s1的末尾和s2的开头的重复部分
@@ -24,15 +25,9 @@ function LookForTheSame(s1, s2) {
     return -1;
 }
 
-/**
- * 根据含“不”的选择性询问生成对应回复
- * @param {string} ask 接受的消息
- * @return {ReplyObject} 所有可选项
- */
-function AorA(ask) {
-    let reply = new ReplyObject(ask);
-    ask = reply.getNoneCQCodeAsk();
-
+function DoOrNotDo(askObject) {
+    let ask = askObject.ask;
+    let reply = new ReplyObject(askObject);
     // 排除不含“不”、含“不不”、过长或过短的消息
     // if (!ask.includes("不") || ask.includes("不不") || ask.length > 30 || ask.length < 3) return reply.no();
 
@@ -85,7 +80,7 @@ function AorA(ask) {
 
     // 细节处理
     // 重复词有“！”视为恶意代码，不作回应（没人会用"学!code不学!code"聊天吧）
-    if (endString.includes("!") || endString.includes("！")) return reply.no();
+    if (doString.includes("!") || doString.includes("！")) return reply.no();
     // 结束词包含疑问词/符号，取符号前的语句
     if (endString.length > 0) {
         const endStringRegex = /(.*?)(?=\?|？|!|！|,|，|\.|。|呢)+/;
@@ -105,6 +100,5 @@ function AorA(ask) {
     return reply;
 }
 
-/* #endregion */
 
-module.exports = AorA;
+module.exports = DoOrNotDo;

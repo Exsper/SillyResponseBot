@@ -1,3 +1,5 @@
+'use strict';
+
 const ReplyObject = require('../objects/ReplyObject');
 const path = require('path');
 
@@ -95,9 +97,9 @@ function isResultContainWord(result, word) {
 }
 
 
-function doOrNot(ask) {
-    let reply = new ReplyObject(ask);
-    ask = reply.getNoneCQCodeAsk();
+function TrueOrFalse(askObject) {
+    let ask = askObject.ask;
+    let reply = new ReplyObject(askObject);
 
     let result = segment.doSegment(ask, {
         stripPunctuation: true // 去除标点
@@ -131,4 +133,4 @@ function doOrNot(ask) {
 }
 
 
-module.exports = doOrNot;
+module.exports = TrueOrFalse;
