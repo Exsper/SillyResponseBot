@@ -1,16 +1,29 @@
 'use strict';
-// const { CQCode } = require('koishi-utils');
 
-class askObject {
-    constructor(msg) {
-        this.ask = msg;
+
+class AskObject {
+    constructor(meta) {
+        this.ask = meta.message.trim();
 
         this.replaceObjects = [];
         this.replaceTexts = [];
     }
 
-    // 简体化
-    //const simplify = require('koishi-utils').simplify; 
+    // 检查开头是否为！ 或者为@bot
+    cutCommand(botQQ) {
+        if (this.ask.startsWith("!") || this.ask.startsWith("！")) {
+            this.ask = this.ask.substring(1).trim();
+            return true;
+        }
+        else if (botQQ) {
+            const atBot = `[CQ:at,qq=${botQQ}]`;
+            if (this.ask.startsWith(atBot)) {
+                this.ask = ask.substring(atBot.length).trim();
+                return true;
+            }
+        }
+        return false;
+    }
 
     // html转意符换成普通字符
     escape2Html(str) {
@@ -22,23 +35,8 @@ class askObject {
         return str.replace(/\r?\n/g, "");
     }
 
-    cutQRCode() {
-        // 不管[]内容是不是CQcode，反正总是要替换回来的，没有必要去来回转换，下面都白写了
-        /*
-        this.cqCodeObject = CQCode.parseAll(this.msg);
-        this.cqCodeObject.forEach((cqCode, i) => {
-            // 纯文本，处理特殊字符
-            if (cqCode.type === 'text') this.replacedMsg += this.removeReturn(this.escape2Html(cqCode.data.text));
-            // CQ对象，暂存并以其他文本替代，回复时再替换回来
-            else {
-                let replaceText = "[cqObjcet" + i + "]";
-                this.replacedMsg += replaceText;
-                this.replaceTexts.push(replaceText);
-                this.replaceObjects.push(cqCode);
-            }
-        });
-        return this.replacedMsg;
-        */
+    // 将CQCode保存起来并用其他字符替换
+    cutCQCode() {
         const _this = this;
         let output = this.ask.replace(/\[(.+?)\]/g, function (matchString, group, index, orgString) {
             let replacedIndex = _this.replaceObjects.indexOf(matchString);
@@ -52,10 +50,12 @@ class askObject {
                 return _this.replaceTexts[replacedIndex];
             }
         });
-        return this.removeReturn(this.escape2Html(output));
+        this.ask = this.removeReturn(this.escape2Html(output));
+        return this.ask;
     }
 
-    reputQRCode(replymsg) {
+    // 将CQCode替换回去
+    reputCQCode(replymsg) {
         const _this = this;
         return replymsg.replace(/\[(cqObjcet[0-9]+)\]/g, function (matchString, group, index, orgString) {
             let replacedIndex = _this.replaceTexts.indexOf(matchString);
@@ -66,4 +66,4 @@ class askObject {
 
 }
 
-module.exports = askObject;
+module.exports = AskObject;

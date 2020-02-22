@@ -1,3 +1,5 @@
+'use strict';
+
 const ReplyObject = require('../objects/ReplyObject');
 const path = require('path');
 
@@ -12,7 +14,7 @@ segment
     // 强制分割类单词识别
     // .use('URLTokenizer')            // URL识别
     // .use('WildcardTokenizer')       // 通配符，必须在标点符号识别之前
-    .use('PunctuationTokenizer')    // 标点符号识别
+    // .use('PunctuationTokenizer')    // 标点符号识别
     // .use('ForeignTokenizer')        // 外文字符、数字识别，必须在标点符号识别之后
     // 中文单词识别
     .use('DictTokenizer')           // 词典识别
@@ -95,14 +97,13 @@ function isResultContainWord(result, word) {
 }
 
 
-function doOrNot(ask) {
-    let reply = new ReplyObject(ask);
-    ask = reply.getNoneCQCodeAsk();
+function TrueOrFalse(askObject) {
+    let ask = askObject.ask;
+    let reply = new ReplyObject(askObject);
 
     let result = segment.doSegment(ask, {
-        stripPunctuation: true // 去除标点
+        //stripPunctuation: true // 去除标点
     });
-    // tag中文化，暂时用中文字符判断以方便调试，如果词典完善了的话会把tag判断条件全部改为原始数值p
     // https://github.com/leizongmin/node-segment/blob/master/lib/POSTAG.js
     // result.forEach(words => { words.tag = Segment.POSTAG.chsName(words.p) });
 
@@ -132,4 +133,4 @@ function doOrNot(ask) {
 }
 
 
-module.exports = doOrNot;
+module.exports = TrueOrFalse;
