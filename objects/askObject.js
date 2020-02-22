@@ -18,7 +18,7 @@ class AskObject {
         else if (botQQ) {
             const atBot = `[CQ:at,qq=${botQQ}]`;
             if (this.ask.startsWith(atBot)) {
-                this.ask = ask.substring(atBot.length).trim();
+                this.ask = this.ask.substring(atBot.length).trim();
                 return true;
             }
         }
