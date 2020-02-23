@@ -123,7 +123,10 @@ function TrueOrFalse(askObject) {
     else if (isResultContainWord(result, "是")) reply.setChoices(['是', '不是']); // 直接从原句中找“是”更好，因为分析有可能不会单独拆下“是”，下面几个同理
     else if (isResultContainWord(result, "会")) reply.setChoices(['会', '不会']);
     else if (isResultContainWord(result, "能")) reply.setChoices(['能', '不能']);
-    else if (vWord.length > 2 && vWord[vWord.length - 2] === "不") reply.setChoices([`${vWord}`, `${vWord.substring(0, vWord.length - 2) + "得" + vWord.substring(vWord.length - 1)}`]);
+    else if (vWord.length > 2 && vWord[vWord.length - 2] === "不") {
+        if (vWord[vWord.length - 1] === "得") reply.setChoices([`${vWord}`, `${vWord.substring(0, vWord.length - 2) + vWord.substring(vWord.length - 1)}`]);
+        else reply.setChoices([`${vWord}`, `${vWord.substring(0, vWord.length - 2) + "得" + vWord.substring(vWord.length - 1)}`]);
+    }
     else if (vWord.length > 2 && vWord[vWord.length - 2] === "得") reply.setChoices([`${vWord}`, `${vWord.substring(0, vWord.length - 2) + "不" + vWord.substring(vWord.length - 1)}`]);
     else if (result[yIndex - 1].w === "了") reply.setChoices([`${vWord}了`, `没${vWord}`]);
     else if (vWord.substring(vWord.length - 1) === "了") reply.setChoices([`${vWord}`, `没${vWord.substring(0, vWord.length - 1)}`]);
