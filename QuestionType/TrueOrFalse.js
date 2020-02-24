@@ -68,7 +68,8 @@ function getAVWords(result, end = result.length - 1) {
     if (index < 0) return { index: -1, word: "" };
     let word = "";
     while (index >= 0) {
-        if (result[index].p === 0x40000000 || result[index].p === 0x1000) {
+        // 形容词/动词/人名/代词
+        if (result[index].p === 0x40000000 || result[index].p === 0x1000 || result[index].p === 0x80 || result[index].p === 0x10000) {
             word = result[index].w + word;
             index = index - 1;
         }
@@ -105,6 +106,8 @@ function TrueOrFalse(askObject) {
         //stripPunctuation: true // 去除标点
     });
     // https://github.com/leizongmin/node-segment/blob/master/lib/POSTAG.js
+
+    // 测试用
     // result.forEach(words => { words.tag = Segment.POSTAG.chsName(words.p) });
 
     // 倒序查询语气词y

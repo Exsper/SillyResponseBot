@@ -96,7 +96,6 @@ function DoOrNotDo(askObject) {
     //let replyStringFix = positionFlip(replyString);
 
     reply.setChoices([replyString, `不${replyString}`]);
-    reply.flipPosition();
     return reply;
 }
 

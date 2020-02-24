@@ -17,7 +17,7 @@ function ReplyObject(askObject) {
 
 ReplyObject.prototype.setChoices = function(choices) {
     this.choices = choices.map(str => this.askObject.reputCQCode(str));
-    return this;
+    return this.flipPosition();
 };
 
 //set the custom formatting function
@@ -48,6 +48,7 @@ ReplyObject.prototype.no = function() {
 // 以后“是你吗” -> “不是我” 也用得到，现在暂时只回答“不是”
 ReplyObject.prototype.flipPosition = function() {
     this.choices = this.choices.map(str => str.split("").map(char => (char === '我') ? '你' : (char === '你' ? '我' : char)).join(""));
+    return this;
 };
 
 

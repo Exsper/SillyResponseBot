@@ -35,7 +35,6 @@ function ThisOrThat(askObject) {
 
     // 生成选项
     reply.setChoices(arrDo);
-    reply.flipPosition();
     return reply;
 }
 

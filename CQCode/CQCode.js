@@ -41,4 +41,4 @@ class CQCode {
     }
 }
 
-exports.CQCode = CQCode;
+module.exports = CQCode;

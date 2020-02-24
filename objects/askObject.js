@@ -37,17 +37,16 @@ class AskObject {
 
     // 将CQCode保存起来并用其他字符替换
     cutCQCode() {
-        const _this = this;
-        let output = this.ask.replace(/\[(.+?)\]/g, function (matchString, group, index, orgString) {
-            let replacedIndex = _this.replaceObjects.indexOf(matchString);
+        let output = this.ask.replace(/\[(.+?)\]/g, (matchString, group, index, orgString) => {
+            let replacedIndex = this.replaceObjects.indexOf(matchString);
             if (replacedIndex < 0) {
                 let replaceText = "[cqObjcet" + index + "]";
-                _this.replaceTexts.push(replaceText);
-                _this.replaceObjects.push(matchString);
+                this.replaceTexts.push(replaceText);
+                this.replaceObjects.push(matchString);
                 return replaceText;
             }
             else {
-                return _this.replaceTexts[replacedIndex];
+                return this.replaceTexts[replacedIndex];
             }
         });
         this.ask = this.removeReturn(this.escape2Html(output));
@@ -56,11 +55,10 @@ class AskObject {
 
     // 将CQCode替换回去
     reputCQCode(replymsg) {
-        const _this = this;
-        return replymsg.replace(/\[(cqObjcet[0-9]+)\]/g, function (matchString, group, index, orgString) {
-            let replacedIndex = _this.replaceTexts.indexOf(matchString);
+        return replymsg.replace(/\[(cqObjcet[0-9]+)\]/g, (matchString, group, index, orgString) => {
+            let replacedIndex = this.replaceTexts.indexOf(matchString);
             if (replacedIndex < 0) { return matchString; }
-            else return _this.replaceObjects[replacedIndex];
+            else return this.replaceObjects[replacedIndex];
         });
     }
 

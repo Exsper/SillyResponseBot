@@ -13,7 +13,7 @@ class QuestionTypeHelper {
 
     // 初步判断正反问句
     static maybeIsPorN(s) { // 是Positive or negative
-        return (s.includes("不") && !s.includes("不不") && s.length >= 3);
+        return (!!s.match(/(.+)不\1/));
     }
 
     // 初步判断选择问句
@@ -41,8 +41,8 @@ class QuestionTypeHelper {
         if (this.isRhetorical(s)) return false;
         if (this.isSpecific(s)) return false;
         if (this.maybeIsChoice(s)) return ThisOrThat;
-        if (this.maybeIsQuestion(s)) return TrueOrFalse;
         if (this.maybeIsPorN(s)) return DoOrNotDo;
+        if (this.maybeIsQuestion(s)) return TrueOrFalse;
         return false;
     }
 
