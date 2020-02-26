@@ -12,6 +12,8 @@ let smc = new sentMessageCollection();
 module.exports.name = 'SillyResponseBot';
 // 插件处理和输出
 module.exports.apply = (ctx) => {
+    //const { app } = ctx;
+    //const botName = app.options.nickname;
     ctx.middleware((meta, next) => {
         run(meta, next, smc);
     });
