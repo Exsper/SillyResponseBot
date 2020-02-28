@@ -1,7 +1,7 @@
 'use strict';
 
 
-class AskObject {
+class askObject {
     constructor(meta) {
         this.ask = meta.message.trim();
 
@@ -64,4 +64,4 @@ class AskObject {
 
 }
 
-module.exports = AskObject;
+module.exports = askObject;

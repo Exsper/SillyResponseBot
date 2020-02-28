@@ -1,6 +1,6 @@
 'use strict';
 
-const AskObject = require('./objects/AskObject');
+const AskObject = require('./objects/askObject');
 const QuestionTypeHelper = require('./QuestionType/QuestionTypeHelper');
 const SendMessageObject = require('./objects/sendMessageObject');
 
