@@ -1,13 +1,13 @@
-'use strict';
+"use strict";
 
-const run = require('./run');
+const run = require("./run");
 
-const sentMessageCollection = require('./objects/sentMessageCollection');
-let smc = new sentMessageCollection();
+const SentMessageCollection = require("./objects/sentMessageCollection");
+const smc = new SentMessageCollection();
 
 // 模拟meta
 console.log("你的QQ号是1了");
-class meta{
+class Meta {
     constructor(qqId, ask) {
         this.userId = qqId; // 发送者id
         this.selfId = 114514; // 机器人id
@@ -23,18 +23,19 @@ class meta{
 
 
 // 模拟next
+// eslint-disable-next-line require-jsdoc
 function next() {
     console.log("不处理，转向下一个插件");
 }
 
 
 let myQQ = "1";
-let readline = require('readline');
+const readline = require("readline");
 const rl = readline.createInterface({
     input: process.stdin,
     output: process.stdout
 });
-rl.on('line', function (line) {
+rl.on("line", (line) => {
     if (line === "qq2") {
         myQQ = "2";
         console.log("你的QQ号是2了");
@@ -43,11 +44,5 @@ rl.on('line', function (line) {
         myQQ = "1";
         console.log("你的QQ号是1了");
     }
-    else {
-        run(new meta(myQQ, line), next, smc, true);
-    }
+    else run(new Meta(myQQ, line), next, smc, true);
 });
-rl.on('close', function () {
-    process.exit();
-});
-

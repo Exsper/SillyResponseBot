@@ -1,40 +1,46 @@
-'use strict';
+"use strict";
 
-const ReplyObject = require('../objects/ReplyObject');
+const ReplyObject = require("../objects/ReplyObject");
 
 /**
  * 寻找s1的末尾和s2的开头的重复部分
  * @param {string} s1 字符串aaabb
  * @param {string} s2 字符串bbccc
- * @return {int} 重复部分在s1的起始点 
+ * @return {int} 重复部分在s1的起始点
  */
 function LookForTheSame(s1, s2) {
-    let s1length = s1.length;
-    let s2length = s2.length;
+    const s1length = s1.length;
+    const s2length = s2.length;
 
     if (s1length <= 0 || s2length <= 0) return -1;
 
     // 寻找重复部分
     let length = s1length > s2length ? s2length : s1length;
     while (length > 0) {
-        let s1end = s1.substring(s1length - length);
-        let s2start = s2.substring(0, length);
+        const s1end = s1.substring(s1length - length);
+        const s2start = s2.substring(0, length);
         if (s1end === s2start) return s1length - length;
         length -= 1;
     }
     return -1;
 }
 
+/**
+ * DoOrNotDo
+ * @param {AskObject} askObject askObject
+ * @returns {ReplyObject} replyObject
+ */
 function DoOrNotDo(askObject) {
-    let ask = askObject.ask;
-    let reply = new ReplyObject(askObject);
-    // 排除不含“不”、含“不不”、过长或过短的消息
-    // if (!ask.includes("不") || ask.includes("不不") || ask.length > 30 || ask.length < 3) return reply.no();
+    const ask = askObject.ask;
+    const reply = new ReplyObject(askObject);
 
-    let asklength = ask.length;
+    const asklength = ask.length;
 
     // 获取所有“不”的位置
-    let arrOr = ask.split("").map((word, index) => { if (word === '不') return index; }).filter(e => e !== undefined);
+    let arrOr = ask.split("").map((word, index) => {
+        if (word === "不") return index;
+        return null;
+    }).filter((e) => e);
 
     // 删除头尾的“不”
     if (arrOr[0] === 0) arrOr = arrOr.slice(1);
@@ -43,7 +49,7 @@ function DoOrNotDo(askObject) {
     if (arrOr.length <= 0) return reply.no();
 
     // 分析所有按“不”拆分情况，找出“不”两边有相同字符串的情况
-    let possible = arrOr.reduce((acc, or) => {
+    const possible = arrOr.reduce((acc, or) => {
         const s1 = ask.substring(0, or);
         const s2 = ask.substring(or + 1, asklength);
         const start = LookForTheSame(s1, s2);
@@ -85,15 +91,13 @@ function DoOrNotDo(askObject) {
     if (endString.length > 0) {
         const endStringRegex = /(.*?)(?=\?|？|!|！|,|，|\.|。|呢)+/;
         const matchResult = endString.match(endStringRegex);
-        if (matchResult instanceof Array) {
-            endString = matchResult[0];
-        }
+        if (matchResult instanceof Array) endString = matchResult[0];
     }
 
-    //输出
-    let replyString = doString + endString;
+    // 输出
+    const replyString = doString + endString;
     // 将“我”改成“你”，“你”改成“我”
-    //let replyStringFix = positionFlip(replyString);
+    // let replyStringFix = positionFlip(replyString);
 
     reply.setChoices([replyString, `不${replyString}`]);
     return reply;

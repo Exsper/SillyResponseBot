@@ -1,11 +1,11 @@
-'use strict';
+"use strict";
 
-const ReplyObject = require('../objects/ReplyObject');
-const path = require('path');
+const ReplyObject = require("../objects/ReplyObject");
+const path = require("path");
 
 // segment分词
 // 载入模块
-const Segment = require('segment');
+const Segment = require("segment");
 // 创建实例
 const segment = new Segment();
 // 使用识别模块及字典
@@ -17,52 +17,59 @@ segment
     // .use('PunctuationTokenizer')    // 标点符号识别
     // .use('ForeignTokenizer')        // 外文字符、数字识别，必须在标点符号识别之后
     // 中文单词识别
-    .use('DictTokenizer')           // 词典识别
+    .use("DictTokenizer")           // 词典识别
     // .use('ChsNameTokenizer')        // 人名识别，建议在词典识别之后
-
     // 优化模块
     // .use('EmailOptimizer')          // 邮箱地址识别
     // .use('ChsNameOptimizer')        // 人名识别优化
     // .use('DictOptimizer')           // 词典识别优化
     // .use('DatetimeOptimizer')       // 日期时间识别优化
-
     // 字典文件
-
     // .loadDict('dict.txt')           // 盘古词典
     // .loadDict('dict2.txt')          // 扩展词典（用于调整原盘古词典）
     // .loadDict('names.txt')          // 常见名词、人名
     // .loadDict('wildcard.txt', 'WILDCARD', true)   // 通配符
     // .loadSynonymDict('synonym.txt')   // 同义词
     // .loadStopwordDict('stopword.txt') // 停止符
-
     // 自定义词典
-    .loadDict(path.join(__dirname, '../segmentUserDict/singledict.txt'))  // 复制原dict，删除一些词组，防止词组改变词性
-    .loadDict(path.join(__dirname, '../segmentUserDict/osu.txt'))  // osu专用语
-    .loadDict(path.join(__dirname, '../segmentUserDict/ywc.txt'))  // 疑问词
+    .loadDict(path.join(__dirname, "../segmentUserDict/singledict.txt"))  // 复制原dict，删除一些词组，防止词组改变词性
+    .loadDict(path.join(__dirname, "../segmentUserDict/osu.txt"))  // osu专用语
+    .loadDict(path.join(__dirname, "../segmentUserDict/ywc.txt"));  // 疑问词
 
 
-// 倒序(end -> start)查找语气词y，返回语气词y在解析结果中的index
+/** 倒序(end -> start)查找语气词y，返回语气词y在解析结果中的index
+* @param {object} result 解析结果
+* @param {int} end endInedx
+* @returns {int} yIndex
+*/
 function lastIndexOfY(result, end = result.length - 1) {
+    // eslint-disable-next-line curly
     for (let i = end; i >= 0; i--) {
-        if (result[i].p === 0x200 || result[i].w[0] === "了")
-            return i;
+        if (result[i].p === 0x200 || result[i].w[0] === "了") return i;
     }
     // 没有找到语气词
     return -1;
 }
 
-// 倒序(end -> start)查找形容词或动词，返回形容词或动词在解析结果中的index
+/** 倒序(end -> start)查找形容词或动词，返回形容词或动词在解析结果中的index
+* @param {object} result 解析结果
+* @param {int} end endInedx
+* @returns {int} avIndex
+*/
 function lastIndexOfAV(result, end = result.length - 1) {
+    // eslint-disable-next-line curly
     for (let i = end; i >= 0; i--) {
-        if (result[i].p === 0x40000000 || result[i].p === 0x1000)
-            return i;
+        if (result[i].p === 0x40000000 || result[i].p === 0x1000) return i;
     }
     // 没有找到形容词或动词
     return -1;
 }
 
-
-// 倒序(end -> start)查找形容词动词词组，返回{index:词组第一个词在解析结果中的index, word:该词组}
+/** 倒序(end -> start)查找形容词动词词组，返回{index:词组第一个词在解析结果中的index, word:该词组}
+* @param {object} result 解析结果
+* @param {int} end endInedx
+* @returns {object} {index:词组第一个词在解析结果中的index, word:该词组}
+*/
 function getAVWords(result, end = result.length - 1) {
     let index = lastIndexOfAV(result, end);
     if (index < 0) return { index: -1, word: "" };
@@ -83,27 +90,33 @@ function getAVWords(result, end = result.length - 1) {
         }
     }
     if (index < 0) index = 0;
-    return { index: index, word: word };
+    return { index, word };
 }
 
-
+/** 检查解析结果是否包含指定字词
+* @param {object} result 解析结果
+* @param {int} word 字词
+* @returns {boolean} 是否包含
+*/
 function isResultContainWord(result, word) {
     let isContain = false;
     result.forEach((r, i) => {
-        if (r.w === word) {
-            isContain = true;
-        }
+        if (r.w === word) isContain = true;
     });
     return isContain;
 }
 
-
+/**
+ * TrueOrFalse
+ * @param {AskObject} askObject askObject
+ * @returns {ReplyObject} replyObject
+ */
 function TrueOrFalse(askObject) {
-    let ask = askObject.ask;
-    let reply = new ReplyObject(askObject);
+    const ask = askObject.ask;
+    const reply = new ReplyObject(askObject);
 
-    let result = segment.doSegment(ask, {
-        //stripPunctuation: true // 去除标点
+    const result = segment.doSegment(ask, {
+        // stripPunctuation: true // 去除标点
     });
     // https://github.com/leizongmin/node-segment/blob/master/lib/POSTAG.js
 
@@ -111,11 +124,11 @@ function TrueOrFalse(askObject) {
     // result.forEach(words => { words.tag = Segment.POSTAG.chsName(words.p) });
 
     // 倒序查询语气词y
-    let yIndex = lastIndexOfY(result);
+    const yIndex = lastIndexOfY(result);
     if (yIndex < 1) return reply.no(); // 单独一个“吗”字也不行
 
     // 从语气词y倒叙查询动词形容词av
-    let av = getAVWords(result, yIndex);
+    const av = getAVWords(result, yIndex);
     if (av.index < 0) return reply.no();
     let vWord = av.word;
 
@@ -123,9 +136,9 @@ function TrueOrFalse(askObject) {
 
     // 判断语气词y前一个词的词性，选择对应回复
     if (result[yIndex - 1].w === "什么") return reply.no(); // 不是选择性疑问句
-    else if (isResultContainWord(result, "是")) reply.setChoices(['是', '不是']); // 直接从原句中找“是”更好，因为分析有可能不会单独拆下“是”，下面几个同理
-    else if (isResultContainWord(result, "会")) reply.setChoices(['会', '不会']);
-    else if (isResultContainWord(result, "能")) reply.setChoices(['能', '不能']);
+    else if (isResultContainWord(result, "是")) reply.setChoices(["是", "不是"]); // 直接从原句中找“是”更好，因为分析有可能不会单独拆下“是”，下面几个同理
+    else if (isResultContainWord(result, "会")) reply.setChoices(["会", "不会"]);
+    else if (isResultContainWord(result, "能")) reply.setChoices(["能", "不能"]);
     else if (vWord.length > 2 && vWord[vWord.length - 2] === "不") {
         if (vWord[vWord.length - 1] === "得") reply.setChoices([`${vWord}`, `${vWord.substring(0, vWord.length - 2) + vWord.substring(vWord.length - 1)}`]);
         else reply.setChoices([`${vWord}`, `${vWord.substring(0, vWord.length - 2) + "得" + vWord.substring(vWord.length - 1)}`]);
