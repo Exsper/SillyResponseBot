@@ -2,7 +2,7 @@
 
 const run = require("../run");
 
-const SentMessageCollection = require("./objects/sentMessageCollection");
+const SentMessageCollection = require("../objects/sentMessageCollection");
 const smc = new SentMessageCollection();
 
 // 模拟meta
