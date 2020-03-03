@@ -13,7 +13,7 @@ class QuestionTypeHelper {
 
     // 初步判断正反问句
     static maybeIsPorN(s) { // 是Positive or negative
-        return (!!s.match(/(.+)不\1/));
+        return (!!s.match(/(.+)[不没]\1/));
     }
 
     // 初步判断选择问句

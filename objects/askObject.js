@@ -5,8 +5,11 @@ class askObject {
     constructor(meta) {
         this.ask = meta.message.trim();
 
-        this.replaceObjects = [];
-        this.replaceTexts = [];
+        this.replaceCQObjects = [];
+        this.replaceCQTexts = [];
+
+        this.replaceQuoteObjects = [];
+        this.replaceQuoteTexts = [];
     }
 
     // 检查开头是否为！ 或者为@bot
@@ -26,42 +29,76 @@ class askObject {
     }
 
     // html转意符换成普通字符
-    // eslint-disable-next-line class-methods-use-this
-    escape2Html(str) {
+    escape2Html() {
         const arrEntities = { "lt": "<", "gt": ">", "nbsp": " ", "amp": "&", "quot": '"' };
-        return str.replace(/&(lt|gt|nbsp|amp|quot);/ig, (all, t) => { return arrEntities[t] });
+        this.ask = this.ask.replace(/&(lt|gt|nbsp|amp|quot);/ig, (all, t) => { return arrEntities[t] });
     }
     // 删除换行符
-    // eslint-disable-next-line class-methods-use-this
-    removeReturn(str) {
-        return str.replace(/\r?\n/g, "");
+    removeReturn() {
+        this.ask = this.ask.replace(/\r?\n/g, "");
     }
 
     // 将CQCode保存起来并用其他字符替换
     cutCQCode() {
-        const output = this.ask.replace(/\[(.+?)\]/g, (matchString, group, index, orgString) => {
-            const replacedIndex = this.replaceObjects.indexOf(matchString);
+        this.ask = this.ask.replace(/\[(.+?)\]/g, (matchString, group, index) => {
+            const replacedIndex = this.replaceCQObjects.indexOf(matchString);
             if (replacedIndex < 0) {
                 const replaceText = "[cqObjcet" + index + "]";
-                this.replaceTexts.push(replaceText);
-                this.replaceObjects.push(matchString);
+                this.replaceCQTexts.push(replaceText);
+                this.replaceCQObjects.push(matchString);
                 return replaceText;
             }
-            return this.replaceTexts[replacedIndex];
+            return this.replaceCQTexts[replacedIndex];
         });
-        this.ask = this.removeReturn(this.escape2Html(output));
-        return this.ask;
+    }
+
+    // 将引用保存起来并用其他字符替换
+    cutQuote() {
+        this.ask = this.ask.replace(/["'“【「『《](.+?)["'”】」』》]/g, (matchString, group, index) => {
+            const replacedIndex = this.replaceQuoteObjects.indexOf(matchString);
+            if (replacedIndex < 0) {
+                const replaceText = "[quoteObjcet" + index + "]";
+                this.replaceQuoteTexts.push(replaceText);
+                this.replaceQuoteObjects.push(matchString);
+                return replaceText;
+            }
+            return this.replaceQuoteTexts[replacedIndex];
+        });
     }
 
     // 将CQCode替换回去
     reputCQCode(replymsg) {
-        return replymsg.replace(/\[(cqObjcet[0-9]+)\]/g, (matchString, group, index, orgString) => {
-            const replacedIndex = this.replaceTexts.indexOf(matchString);
+        return replymsg.replace(/\[(cqObjcet[0-9]+)\]/g, (matchString) => {
+            const replacedIndex = this.replaceCQTexts.indexOf(matchString);
             if (replacedIndex < 0) return matchString;
-            return this.replaceObjects[replacedIndex];
+            return this.replaceCQObjects[replacedIndex];
         });
     }
 
+    // 将引用替换回去
+    reputQuote(replymsg) {
+        return replymsg.replace(/\[(quoteObjcet[0-9]+)\]/g, (matchString) => {
+            const replacedIndex = this.replaceQuoteTexts.indexOf(matchString);
+            if (replacedIndex < 0) return matchString;
+            return this.replaceQuoteObjects[replacedIndex];
+        });
+    }
+
+    // 为避免文字后续处理错误，先替换掉特殊格式字符
+    removeSpecialStrings() {
+        // 注意顺序
+        this.escape2Html();
+        this.removeReturn();
+        this.cutCQCode();
+        this.cutQuote();
+        return this.ask;
+    }
+
+    // 将特殊格式字符替换回去
+    reputSpecialStrings(str) {
+        // 注意顺序
+        return this.reputCQCode(this.reputQuote(str));
+    }
 }
 
 module.exports = askObject;

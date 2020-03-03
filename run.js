@@ -16,7 +16,7 @@ function run(meta, next, smc, istest = false) {
     try {
         const askObject = new AskObject(meta);
         if (!askObject.cutCommand(meta.selfId)) return next();
-        const method = QuestionTypeHelper.getMethod(askObject.cutCQCode());
+        const method = QuestionTypeHelper.getMethod(askObject.removeSpecialStrings());
         if (!method) return next();
         const replyObject = method(askObject);
         if (!replyObject.reply) return next();

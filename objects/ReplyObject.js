@@ -13,7 +13,7 @@ class ReplyObject {
         };
     }
     setChoices(choices) {
-        this.choices = choices.map((str) => this.askObject.reputCQCode(str));
+        this.choices = choices.map((str) => this.askObject.reputSpecialStrings(str));
         return this.flipPosition();
     }
     // set the custom formatting function
