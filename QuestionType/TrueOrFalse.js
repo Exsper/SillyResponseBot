@@ -147,7 +147,7 @@ function AVWords2Choices(av) {
     }
 
     // 第一个是动词
-    if (av.VIndex >= 0 && av.VIndex < av.AIndex) {
+    if (av.VIndex < av.AIndex) {
         if (av.words[av.VIndex] === "不") return [av.words.substr(0, av.VIndex) + av.words.substr(av.VIndex + 1), av.words];
         if (av.words[av.VIndex] === "没") return [av.words.substr(0, av.VIndex) + av.words.substr(av.VIndex + 1) + "了", av.words]; // “了”放最后
         if (av.words.substr(av.VIndex, av.VLength).endsWith("不了")) return [av.words.substr(0, av.VIndex) + av.words.substr(av.VIndex, av.VLength - 2) + "得了" + av.words.substr(av.VIndex + av.VLength), av.words];
@@ -155,6 +155,9 @@ function AVWords2Choices(av) {
         if (av.words[av.VIndex + av.VLength - 1] === "了") return [av.words, av.words.substr(0, av.VIndex) + "没" + av.words.substr(av.VIndex, av.VLength - 1) + av.words.substr(av.VIndex + av.VLength)];
         return [av.words, av.words.substr(0, av.VIndex) + "不" + av.words.substr(av.VIndex)];
     }
+
+    // 不应该两种都没有
+    return ["", ""];
 }
 
 

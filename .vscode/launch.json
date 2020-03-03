@@ -12,8 +12,8 @@
             "skipFiles": [
                 "<node_internals>/**"
             ],
-            //"program": "${workspaceFolder}\\test\\answerTest",
-            "program": "${workspaceFolder}\\test\\freeTest",
+            "program": "${workspaceFolder}\\test\\answerTest",
+            //"program": "${workspaceFolder}\\test\\freeTest",
             "console": "externalTerminal"
         }
     ]
