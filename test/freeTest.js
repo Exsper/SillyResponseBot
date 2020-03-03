@@ -1,6 +1,6 @@
 "use strict";
 
-const run = require("./run");
+const run = require("../run");
 
 const SentMessageCollection = require("./objects/sentMessageCollection");
 const smc = new SentMessageCollection();

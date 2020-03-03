@@ -13,8 +13,9 @@ class ReplyObject {
         };
     }
     setChoices(choices) {
+        this.flipPosition();
         this.choices = choices.map((str) => this.askObject.reputSpecialStrings(str));
-        return this.flipPosition();
+        return this;
     }
     // set the custom formatting function
     format(formatter) {

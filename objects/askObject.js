@@ -28,6 +28,11 @@ class askObject {
         return false;
     }
 
+    // 取最后一句话
+    getLastCentense() {
+        this.ask = this.ask.match(/[^,，。]+$/g)[0];
+    }
+
     // html转意符换成普通字符
     escape2Html() {
         const arrEntities = { "lt": "<", "gt": ">", "nbsp": " ", "amp": "&", "quot": '"' };
@@ -91,6 +96,7 @@ class askObject {
         this.removeReturn();
         this.cutCQCode();
         this.cutQuote();
+        this.getLastCentense();
         return this.ask;
     }
 
