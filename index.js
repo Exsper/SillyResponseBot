@@ -1,6 +1,6 @@
 "use strict";
 
-const run = require("./run").default;
+const run = require("./run");
 
 // TODO
 // 1. cq code
