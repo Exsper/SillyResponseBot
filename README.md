@@ -9,7 +9,7 @@ npm install Exsper/SillyResponseBot
 ```
 
 ## usage
-必须先安装koishi，然后在koishi中引用该插件
+必须先安装[koishi](https://koishi.js.org/guide/getting-started.html#%E8%B0%83%E7%94%A8-koishi)，然后在koishi中引用该插件
 ```javascript
 app.plugin(require('SillyResponseBot'));
 ```
